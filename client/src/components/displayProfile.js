@@ -1,11 +1,10 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery} from '@apollo/react-hooks';
-import { Marker, WebMercatorViewport} from 'react-map-gl'
+import ReactMapGL, { Marker, WebMercatorViewport} from 'react-map-gl'
 import {motion} from 'framer-motion'
 
 import {GET_PROFILE_QUERY} from '../util/graphql'
 
-const ReactMapGL = lazy(() => import ('react-map-gl'))
 
 function GetAvatar({username}) {
   const {
@@ -227,10 +226,6 @@ export function DisplayProfile({username}) {
     <div className="w-screen md:w-1/3 pt-0 md:pt-32 px-4" >
     <ProfileComponent title={data.getProfile.title} description={data.getProfile.description} />
     <div className="border-2 rounded-2xl sm:rounded-3xl my-8" >
-    <Suspense fallback={
-          <div className="absolute flex h-screen w-screen justify-center items-center">
-          <h1 className="font-poppins font-bold mb-16 text-lg md:text-4xl">Loading...</h1>
-          </div>}>
           <ReactMapGL className="rounded-2xl sm:rounded-3xl"
           {...viewport}
           mapboxApiAccessToken= "pk.eyJ1IjoicnVzaC1lZDIxIiwiYSI6ImNrbjRxNXAwZzA1N3cyb3A4c2F2MmlnZG0ifQ.K6KGGGamSWI5txuvA_3RRw"
@@ -259,7 +254,6 @@ export function DisplayProfile({username}) {
                 </a>
             </Marker>))}
             </ReactMapGL>
-            </Suspense>
       </div>
      
         <div className="block md:hidden">
