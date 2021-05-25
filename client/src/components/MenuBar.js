@@ -58,7 +58,7 @@ function MenuBar() {
     <motion.div className="fixed z-50 w-screen flex justify-center " style={{y: yPosAnim}}>
       <div className="flex items-center justify-between px-1.5 md:px-2 lg:px-2 py-1.5 md:py-2 lg:py-2 place-self-center w-11/12 rounded-b-2xl">
       <div className="flex items-center relative outline-none focus:ring-2 focus:ring-night focus:ring-offset-2" tabIndex="0">
-      <Link to="/" className="outline-none"><motion.h1 className="font-mulish font-black text-xl md:text-4xl px-2 bg-coral rounded-xl subpixel-antialiased outline-none"> FoodFriends </motion.h1></Link>
+      <Link to="/" className="outline-none"><motion.h1 className="font-mulish font-black text-xl md:text-4xl px-2 bg-coral rounded-xl subpixel-antialiased outline-none"> foodTRUCKS </motion.h1></Link>
       </div>
       <div>
       <div className="flex items-center relative"  onClick={() => setIsOpen(isOpen => !isOpen)}>
@@ -85,7 +85,7 @@ function MenuBar() {
       <div className="flex items-center justify-between px-1.5 md:px-2 lg:px-2 py-1.5 md:py-2 lg:py-2 w-11/12 rounded-2xl">
 
       <div className="flex items-center relative">
-      <Link to="/"><span className="font-mulish font-black text-xl md:text-4xl px-2 py-1 bg-coral rounded-lg sm:rounded-xl subpixel-antialiased"> FoodFRIENDS </span></Link>
+      <Link to="/"><span className="font-mulish font-black text-xl md:text-4xl px-2 py-1 bg-coral rounded-lg sm:rounded-xl subpixel-antialiased"> foodTRUCKS </span></Link>
       </div>
         <div className="flex items-center relative">
         <Link to="/login"><motion.h2 className="bg-night text-white font-mulish font-normal text-center text-base w-20 sm:w-24 py-1 sm:py-2 mx-1 sm:mx-3 my-2 rounded-lg sm:rounded-xl"  whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Sign In</motion.h2></Link>

@@ -1,10 +1,14 @@
 import React, { useState, useEffect} from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import ReactMapGL, { Marker, NavigationControl} from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 import {motion} from 'framer-motion';
 
 import {FETCH_PROFILES_QUERY, GET_PROFILE_QUERY} from '../util/graphql'
 import { Link } from 'react-router-dom';
+
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 function GetAvatar({username}) {
   const { data  } = useQuery(GET_PROFILE_QUERY, {
