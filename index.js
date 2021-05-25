@@ -11,11 +11,16 @@ const resolvers = require('./graphql/resolvers/resolvers')
 
 
 const pubsub = new PubSub();
-const port = process.env.PORT || 5000;;
+const port = process.env.PORT || 5000;
 
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.get('*.js', function (req, res, next) {
+    req.url = req.url + '.gz';
+    res.set('Content-Encoding', 'gzip');
+    next();
+  });
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req, pubsub })}); 
   
   server.applyMiddleware({
@@ -32,9 +37,8 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
 
   if ( process.env.NODE_ENV ==="production"){
 
-    app.use(express.static("client/build"));
-
     const path = require("path");
+    app.use(express.static(path.join(__dirname, "client/build")));
 
     app.get("*", (req, res) => {
 
@@ -44,4 +48,4 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
 
 console.log(port)
 }
-app.listen(port, () => console.log(`🚀 Server ready at http://localhost:${port}`));
+app.listen(port, () => console.log(``));
