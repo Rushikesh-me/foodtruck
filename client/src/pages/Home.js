@@ -1,6 +1,6 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, lazy, Suspense} from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import ReactMapGL, { Marker, NavigationControl} from "react-map-gl";
+import { NavigationControl, Marker} from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import {motion} from 'framer-motion';
 
@@ -9,6 +9,8 @@ import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+const ReactMapGL = lazy(() => import ('react-map-gl'))
+
 
 function GetAvatar({username}) {
   const { data  } = useQuery(GET_PROFILE_QUERY, {
@@ -185,6 +187,10 @@ function DisplayTab() {
 
             <div className="h-screen w-screen">
             <div className="bg-gradient-to-b from-night30 via-transparent pointer-events-none"></div>
+            <Suspense fallback={
+          <div className="absolute flex h-screen w-screen justify-center items-center">
+          <h1 className="font-poppins font-bold mb-16 text-lg md:text-4xl">Loading...</h1>
+          </div>}>
            <ReactMapGL
             {...viewport}
             mapboxApiAccessToken= "pk.eyJ1IjoicnVzaC1lZDIxIiwiYSI6ImNrbjRxNXAwZzA1N3cyb3A4c2F2MmlnZG0ifQ.K6KGGGamSWI5txuvA_3RRw"
@@ -230,6 +236,7 @@ function DisplayTab() {
 {/* )} */}
 
               </ReactMapGL>
+              </Suspense>
               </div>
               <DisplayTab />            
         </div>

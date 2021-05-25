@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { AuthProvider } from './context/auth';
 import AuthRoute from './util/AuthRoute';
 
-const MenuBar = lazy(() => import ('./components/MenuBar'))
-const Home = lazy(() => import ('./pages/Home'))
+import MenuBar from './components/MenuBar'
+import Home from './pages/Home'
 const Login = lazy(() => import ('./pages/Login'))
 const Register = lazy(() => import ('./pages/Register'))
 const Profile = lazy(() => import ('./pages/Profile'))
