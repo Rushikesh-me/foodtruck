@@ -3,6 +3,7 @@ const { ApolloServer, PubSub } = require('apollo-server-express');
 const mongoose = require('mongoose');
 const path = require("path");
 const db = require('./utils/mongodb')
+var compression = require('compression')
 require('dotenv').config()
 
 
@@ -16,6 +17,7 @@ const port = process.env.PORT || 5000;
 const app = express();
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(compression());
 
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req, pubsub })}); 
   

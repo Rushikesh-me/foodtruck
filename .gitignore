@@ -1,2 +1,7 @@
 .env
 node_modules
+public
+src
+craco.config.js
+postcss.config.js
+tailwind.config.js
