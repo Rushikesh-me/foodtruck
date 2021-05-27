@@ -199,7 +199,7 @@ module.exports = {
       try {
         const uploadResponse = await cloudinary.uploader.upload(file , 
           {resource_type: "image", public_id: `foodtruck/covers/${username}`, invalidate: true,
-          overwrite: true, crop: "fill", aspect_ratio:"2:1", quality: 'auto',  format: 'png'});
+          overwrite: true,crop: "fill", aspect_ratio:"2:1", width:"1000", quality: 'auto', gravity: "auto",  format: 'png'});
           console.log(uploadResponse);
           const uri = await uploadResponse.url
           

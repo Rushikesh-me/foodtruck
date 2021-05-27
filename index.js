@@ -48,4 +48,4 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
 
 console.log(port)
 }
-app.listen(port, () => console.log(``));
+app.listen(port, () => console.log(''));
