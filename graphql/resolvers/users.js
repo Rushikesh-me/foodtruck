@@ -149,7 +149,7 @@ module.exports = {
         subject: 'Please confirm your account', // Subject line
         html: `<div>
         <h1>Email Confirmation</h1>
-        <h2>To activate your account, <a href="http://localhost:3000/authenticate/${authorization}">click here</a><h3>`// plain text body
+        <h2>To activate your account, <a href="https://find-foodtruck.herokuapp.com/authenticate/${authorization}">click here</a><h3>`// plain text body
       };
 
       transport.sendMail(mailOptions, function (err, info) {
