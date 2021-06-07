@@ -194,7 +194,7 @@ function DisplayTab() {
            <ReactMapGL
             {...viewport}
             mapboxApiAccessToken= "pk.eyJ1IjoicnVzaC1lZDIxIiwiYSI6ImNrbjRxNXAwZzA1N3cyb3A4c2F2MmlnZG0ifQ.K6KGGGamSWI5txuvA_3RRw"
-            mapStyle="mapbox://styles/rush-ed21/ckob2pyvy0h3i18oafq9fu4up"
+            mapStyle="mapbox://styles/rush-ed21/ckob2pyvy0h3i18oafq9fu4up?optimize=true"
             onViewportChange={viewport => {
               setViewport(viewport);
             }}>
