@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'   # or a version that matches your runtime
+          node-version: '18'   # or a version that matches your runtime
 
       # 3. Install dependencies
       - name: Install dependencies
