@@ -1,0 +1,35 @@
+service: find-food-truck
+
+provider:
+  name: aws
+  runtime: nodejs14.x   # or a newer version if you prefer
+  stage: dev            # you can change this (e.g., to 'prod')
+  region: us-east-1     # choose your preferred region
+
+functions:
+  app:
+    handler: index.handler   # points to the exported Lambda handler in index.js
+    events:
+      - http: 
+          path: /
+          method: any
+          cors: true
+      - http: 
+          path: /{proxy+}
+          method: any
+          cors: true
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true
+
+# custom:
+  # customDomain:
+  #   domainName: api.yourdomain.com   # replace with your subdomain (or root) you wish to use
+  #   basePath: ''
+  #   stage: ${self:provider.stage}
+  #   createRoute53Record: true

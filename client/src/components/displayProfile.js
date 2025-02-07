@@ -151,9 +151,7 @@ export function DisplayProfile({username}) {
             }
         });
         
-      } else {
-            console.log(error)
-        }
+      }
 
 
   ///profile details component///
@@ -181,33 +179,30 @@ export function DisplayProfile({username}) {
 
   function MenuComponent ({data}) {
 
-    return(
-      <div className="pt-14">
-      <h1 className="font-poppins font-bold mb-16 text-3xl text-center sm:text-left md:text-4xl"> Menu Card </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 my-4 px-0 md:pr-8">
-      {
-          data.getProfile.menu.map( (m) => (
-            <div className="relative bg-blush py-3 my-4 rounded-2xl" key={m.id}>
-              <div className="flex items-center" >
-                <div className="relative -mt-16 ml-2 rounded-3xl">
-                <img src={m.picture} className="h-32 w-32 md:h-40 md:w-40 rounded-3xl" alt={m.item}/>
-                </div>
-                <div className="pl-2">
-              <h2 className="font-poppins font-semibold px-2 text-xl md:text-3xl" >{m.item}</h2>
-             
-              <h2 className="font-poppins font-normal px-2 text-lg md:text-xl" >{m.price} $</h2>
-              </div>
-              </div>
-              <div className="">
-                <h2 className="font-mulish font-semibold py-4 px-4 text-sm md:text-2xl" >{m.description}</h2>
-                </div>
-              </div>
+    return (
+		<div className="pt-14">
+			<h1 className="font-poppins font-bold mb-16 text-3xl text-center sm:text-left md:text-4xl"> Menu Card </h1>
+			<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 my-4 px-0 md:pr-8">
+				{data.getProfile.menu.map((m) => (
+					<div className="relative bg-blush py-3 my-4 rounded-2xl" key={m.id}>
+						<div className="flex items-center">
+              <div className="relative -mt-16 ml-2 rounded-3xl">
+								<img src={!m.picture || m?.picture?.includes("via.placeholder.com") ? "https://img.freepik.com/free-vector/hand-drawn-french-cuisine-illustration_23-2149333379.jpg" : m.picture} className="h-full w-full max-h-32 max-w-32 md:max-h-40 md:max-w-40 rounded-3xl object-cover" alt={m.item} />
+							</div>
+							<div className="pl-2">
+								<h2 className="font-poppins font-semibold px-2 text-xl md:text-3xl">{m.item}</h2>
 
-          ))
-      }
-      </div>
-  </div>
-    )
+								<h2 className="font-poppins font-normal px-2 text-lg md:text-xl">{m.price} €</h2>
+							</div>
+						</div>
+						<div className="">
+							<h2 className="font-mulish font-semibold py-4 px-4 text-sm md:text-2xl">{m.description}</h2>
+						</div>
+					</div>
+				))}
+			</div>
+		</div>
+	);
   }
 
 

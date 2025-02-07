@@ -1,0 +1,34 @@
+name: Deploy to AWS Lambda
+
+# Trigger the workflow on pushes to the main branch (adjust as needed)
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'   # or a version that matches your runtime
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Deploy using Serverless Framework
+      - name: Deploy to AWS Lambda
+        env:
+          AWS_ACCESS_KEY_ID: AKIA57VDLW2BAA4EA25U
+          AWS_SECRET_ACCESS_KEY: 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
+          AWS_DEFAULT_REGION: 'eu-west-1'
+        run: npx serverless deploy

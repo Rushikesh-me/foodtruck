@@ -1,14 +1,13 @@
 import React from 'react';
 import App from './App';
-import ApolloClient from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { createUploadLink } from 'apollo-upload-client';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+
+
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { setContext } from 'apollo-link-context';
-require('dotenv').config()
 
 const httpLink = createUploadLink({
-  uri: "https://find-foodtruck.herokuapp.com/graphql"
+  uri: `http://localhost:3000/graphql`
 });
 
 const authLink = setContext(() => {

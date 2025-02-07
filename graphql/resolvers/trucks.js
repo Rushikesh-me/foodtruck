@@ -76,7 +76,7 @@ module.exports = {
         },
         async updateLocation(_, {latitude, longitude, truckId}, context) {
             const user = checkAuth(context);
-            console.log("Updated");
+
             const [getProfile] = await Profile.find({username: user.username});
             if(getProfile){                    
                 const truck = getProfile.trucks.find((truck) => truck.id === truckId);
@@ -97,7 +97,7 @@ module.exports = {
         },
         async updateStatus(_, {status, truckId}, context) {
             const user = checkAuth(context);
-            console.log("Status Updated");
+
             const [getProfile] = await Profile.find({username: user.username});
             if(getProfile){                    
                 const truck = getProfile.trucks.find((truck) => truck.id === truckId);

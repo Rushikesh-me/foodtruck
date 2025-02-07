@@ -2,9 +2,10 @@ const express = require('express');
 const { ApolloServer, PubSub } = require('apollo-server-express');
 const mongoose = require('mongoose');
 const path = require("path");
-const db = require('./utils/mongodb')
+const db = require('./utils/mongodb');
+const serverless = require("serverless-http");
 const compression = require('compression')
-const enforce = require('express-sslify');
+const cors = require('cors')
 require('dotenv').config()
 
 
@@ -13,10 +14,10 @@ const resolvers = require('./graphql/resolvers/resolvers')
 
 
 const pubsub = new PubSub();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const app = express();
-app.use(enforce.HTTPS({ trustProtoHeader: true }))
+app.use(cors({origin: "http://localhost:3001"}));
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
@@ -34,18 +35,23 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
     })
   });
 
-  if ( process.env.NODE_ENV ==="production"){
+  
 
-    const path = require("path");
     app.use(compression());
-    app.use(express.static(path.join(__dirname, "client/build")));
+    app.use(express.static(path.join(__dirname, "./client/build")));
 
     app.get("*", (req, res) => {
-
+      
         res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 
     })
+  
+    // app.listen(port);
 
-console.log(port)
-}
-app.listen(port, () => console.log(''));
+module.exports.handler = serverless(app, {
+	binary: ["*/*"],
+	request: function (request, context) {
+		request.context = context;
+		return request;
+	},
+});

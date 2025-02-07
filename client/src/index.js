@@ -2,8 +2,9 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import ApolloProvider from './ApolloProvider';
 import './index.css';
+import React from 'react';
 
-ReactDOM.render(ApolloProvider, document.getElementById('root'));
+ReactDOM.render(<React.StrictMode> {ApolloProvider}</React.StrictMode>, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

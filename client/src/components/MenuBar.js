@@ -50,9 +50,7 @@ function MenuBar() {
   const { scrollYProgress } = useViewportScroll();
 
   const yPosAnim = useTransform(scrollYProgress, [0, 0.1], [0, -90]);
-  // useEffect(() => {
-  //   return scrollYProgress.onChange((v) => console.log(v));
-  // }, [scrollYProgress]);
+ 
       
   const menuBar = user ? (
     <motion.div className="fixed z-50 w-screen flex justify-center " style={{y: yPosAnim}}>

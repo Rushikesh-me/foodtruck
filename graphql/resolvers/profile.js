@@ -90,7 +90,7 @@ module.exports = {
     async editMenuItem(_, { item, price, description, menuId }, context) {
       const user = checkAuth(context);
       const [getProfile] = await Profile.find({username: user.username});
-      console.log("in")
+      
       if(getProfile){
         const menu = await getProfile.menu.find((m) => m.id===menuId);
         if(menu){
@@ -169,7 +169,7 @@ module.exports = {
         const uploadResponse = await cloudinary.uploader.upload(file , 
           {resource_type: "image", public_id: `foodtruck/avatars/${publicId}`, invalidate: true,
           overwrite: true, crop:'fill', height: '300', width: '300', quality: 'auto', gravity: 'auto', format: 'png'});
-          console.log(uploadResponse);
+          
           const uri = await uploadResponse.url
           
           if(getProfile) {
@@ -180,7 +180,7 @@ module.exports = {
         return false;
       }
     } catch (err) {
-      console.log(err);
+
         return false;
     }
       
@@ -200,7 +200,7 @@ module.exports = {
         const uploadResponse = await cloudinary.uploader.upload(file , 
           {resource_type: "image", public_id: `foodtruck/covers/${username}`, invalidate: true,
           overwrite: true,crop: "fill", aspect_ratio:"2:1", width:"1000", quality: 'auto', gravity: "auto",  format: 'png'});
-          console.log(uploadResponse);
+  
           const uri = await uploadResponse.url
           
           if(getProfile) {

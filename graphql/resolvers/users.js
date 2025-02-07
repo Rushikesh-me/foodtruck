@@ -5,8 +5,8 @@ const nodemailer = require("nodemailer");
 require('dotenv').config()
 
 
-const user = process.env.EMAIL;
-const pass = process.env.PASS;
+const user = process.env.NODEMAILER_USER;
+const pass = process.env.NODEMAILER_PASS;
 
 const transport = nodemailer.createTransport({
   service: "gmail",
@@ -31,7 +31,7 @@ function generateToken(user) {
       email: user.email,
       username: user.username
     },
-    process.env.SECRET_KEY,
+    process.env.SECRET_KEY || "",
     {expiresIn: "12h"}
   );
 }
@@ -41,7 +41,7 @@ function generateAuthorization(user){
       id: user.id,
       username: user.username
     },
-    process.env.SECRET_KEY,
+    process.env.SECRET_KEY || "",
     {expiresIn: "1h"}
   );
 }
@@ -144,20 +144,20 @@ module.exports = {
       const token = generateToken(res);
       const authorization = generateAuthorization(res)
       const mailOptions = {
-        from: 'sender@email.com', // sender address
-        to: email, // list of receivers
-        subject: 'Please confirm your account', // Subject line
-        html: `<div>
+			from: process.env.EMAIL_USER, // sender address
+			to: email, // list of receivers
+			subject: "Please confirm your Find Food Truck account", // Subject line
+			html: `<div>
         <h1>Email Confirmation</h1>
-        <h2>To activate your account, <a href="https://find-foodtruck.herokuapp.com/authenticate/${authorization}">click here</a><h3>`// plain text body
-      };
+        <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
+		};
+
 
       transport.sendMail(mailOptions, function (err, info) {
-        if(err)
-          throw new Error(err)
-        else
-          console.log(info);
-     });
+        if (err){
+          throw new Error("Error in sending confirmation email")}
+       
+       });
       return {
         ...res._doc,
         id: res._id,
