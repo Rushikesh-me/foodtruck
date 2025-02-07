@@ -2,7 +2,7 @@ service: find-food-truck
 
 provider:
   name: aws
-  runtime: nodejs14.x   # or a newer version if you prefer
+  runtime: nodejs18.x   # or a newer version if you prefer
   stage: dev            # you can change this (e.g., to 'prod')
   region: us-east-1     # choose your preferred region
 
