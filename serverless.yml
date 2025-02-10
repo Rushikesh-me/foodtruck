@@ -5,6 +5,16 @@ provider:
   runtime: nodejs18.x   # or a newer version if you prefer
   stage: dev            # you can change this (e.g., to 'prod')
   region: eu-west-1     # choose your preferred region
+  environment:
+    API_KEY: ${env:API_KEY}
+    API_SECRET: ${env:API_SECRET}
+    APP_URL: ${env:APP_URL}
+    CLOUD_NAME: ${env:CLOUD_NAME}
+    MONGODB: ${env:MONGODB}
+    NODEMAILER_PASS: ${env:NODEMAILER_PASS}
+    NODEMAILER_USER: ${env:NODEMAILER_USER}
+    PORT: ${env:PORT}
+    SECRET_KEY: ${env:SECRET_KEY}
 
 functions:
   app:
