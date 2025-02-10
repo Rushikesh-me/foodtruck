@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: nodejs18.x   # or a newer version if you prefer
   stage: dev            # you can change this (e.g., to 'prod')
-  region: us-east-1     # choose your preferred region
+  region: eu-west-1     # choose your preferred region
 
 functions:
   app:
@@ -19,6 +19,7 @@ functions:
           method: any
           cors: true
 plugins:
+  - serverless-offline
   - serverless-dotenv-plugin
 
 custom:
