@@ -19,7 +19,7 @@ functions:
           method: any
           cors: true
 plugins:
-  - serverless-offline
+  # - serverless-offline
   - serverless-dotenv-plugin
 
 custom:
