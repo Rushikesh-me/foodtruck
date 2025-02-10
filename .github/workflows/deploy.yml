@@ -28,7 +28,16 @@ jobs:
       # 4. Deploy using Serverless Framework
       - name: Deploy to AWS Lambda
         env:
-          AWS_ACCESS_KEY_ID: AKIA57VDLW2BAA4EA25U
-          AWS_SECRET_ACCESS_KEY: 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
-          AWS_DEFAULT_REGION: 'eu-west-1'
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          APP_URL: ${{ secrets.APP_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          CLOUD_NAME: ${{ secrets.CLOUD_NAME }}
+          MONGODB: ${{ secrets.MONGODB }}
+          NODEMAILER_PASS: ${{ secrets.NODEMAILER_PASS }}
+          NODEMAILER_USER: ${{ secrets.NODEMAILER_USER }}
+          PORT: ${{ secrets.PORT }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: npx serverless deploy
