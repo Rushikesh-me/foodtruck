@@ -15,7 +15,6 @@ provider:
     NODEMAILER_USER: ${env:NODEMAILER_USER}
     PORT: ${env:PORT}
     SECRET_KEY: ${env:SECRET_KEY}
-
 functions:
   app:
     handler: index.handler   # points to the exported Lambda handler in index.js
@@ -23,11 +22,13 @@ functions:
       - http: 
           path: /
           method: any
-          cors: true
+          cors:
+            origins: "*"
       - http: 
           path: /{proxy+}
           method: any
-          cors: true
+          cors:
+            origins: "*"
 plugins:
   # - serverless-offline
   - serverless-dotenv-plugin
