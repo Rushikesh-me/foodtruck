@@ -168,7 +168,12 @@ function DisplayTab() {
 	  }
 	
 	if (error) {
-		return <h1>Error fetching trucks...</h1>;
+		console.log("error graphql : ", error);			
+		return (
+			<div className="absolute flex h-screen w-screen justify-center items-center">
+				<h1 className="font-poppins font-bold mb-16 text-lg md:text-4xl">Error fetching data.</h1>
+			</div>
+		);
 	}
 
 
