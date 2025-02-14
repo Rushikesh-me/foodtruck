@@ -22,13 +22,11 @@ functions:
       - http: 
           path: /
           method: any
-          cors:
-            origins: "*"
+          cors: true
       - http: 
           path: /{proxy+}
           method: any
-          cors:
-            origins: "*"
+          cors: true
 plugins:
   # - serverless-offline
   - serverless-dotenv-plugin

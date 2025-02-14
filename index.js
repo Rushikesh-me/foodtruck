@@ -28,8 +28,11 @@ const corsOptions = {
 	methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"]
 };
 app.use(cors(corsOptions));
+// @ts-ignore
 app.use(express.json({ limit: '20mb' }));
+// @ts-ignore
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// @ts-ignore
 app.use(compression());
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req, pubsub })}); 
   
@@ -38,6 +41,7 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
       onHealthCheck: () =>
       new Promise((resolve, reject) => {
         if (mongoose.connection.readyState > 0) {
+            // @ts-ignore
             resolve();
         } else {
             reject();
