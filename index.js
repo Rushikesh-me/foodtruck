@@ -33,10 +33,6 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
         }
     })
   });
-
-  
-
-    app.use(compression());
   
 // app.listen(port, () => { console.log(`Server running at http://localhost:${port}${server.graphqlPath}`) });
 
