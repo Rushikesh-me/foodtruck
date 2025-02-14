@@ -23,12 +23,12 @@ functions:
           path: /
           method: any
           cors: true
-          allowCredentials: true
+          allowCredentials: false
       - http: 
           path: /{proxy+}
           method: any
           cors: true
-          allowCredentials: true
+          allowCredentials: false
 plugins:
   # - serverless-offline
   - serverless-dotenv-plugin

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense} from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery, ApolloError } from '@apollo/client';
 import { NavigationControl, Marker} from "react-map-gl";
 import mapboxgl from "mapbox-gl";
 import {motion} from 'framer-motion';
@@ -63,7 +63,8 @@ function Home() {
       } 
     }
     
-    navigator.geolocation.watchPosition(sucessLocation);
+	  navigator.geolocation.watchPosition(sucessLocation);
+	  
   }, [])
 	
 	useEffect(() => {
