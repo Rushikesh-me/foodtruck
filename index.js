@@ -17,8 +17,20 @@ const pubsub = new PubSub();
 const port = process.env.PORT || 3000;
 
 const app = express();
+
+const corsOptions = {
+	origin: [
+		"http://localhost:3001",
+		"https://food-truck-app.s3.eu-west-1.amazonaws.com", // Replace with your frontend domain
+		/\.amazonaws\.com$/, // Allow AWS domains
+	],
+	credentials: true,
+	methods: ["GET", "POST", "OPTIONS", "PUT", "DELETE"]
+};
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(compression());
 const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ req, pubsub })}); 
   
   server.applyMiddleware({
