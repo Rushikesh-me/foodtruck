@@ -8,6 +8,12 @@ import { setContext } from 'apollo-link-context';
 
 const httpLink = createUploadLink({
 	uri: `https://3vs1qyruvc.execute-api.eu-west-1.amazonaws.com/graphql`,
+	credentials: "include",
+	headers: {
+    "Content-Type": "application/json",
+		// @ts-ignore
+		"Access-Control-Allow-Credentials": true,
+	},
 });
 
 const authLink = setContext(() => {
@@ -20,6 +26,7 @@ const authLink = setContext(() => {
 });
 
 const client = new ApolloClient({
+  // @ts-ignore
   link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
