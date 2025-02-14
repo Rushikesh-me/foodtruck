@@ -7,15 +7,10 @@ import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 import { setContext } from 'apollo-link-context';
 
 const httpLink = createUploadLink({
-	uri: `https://3vs1qyruvc.execute-api.eu-west-1.amazonaws.com/dev/graphql`,
-	credentials: "include",
-	headers: {
+  uri: `https://3vs1qyruvc.execute-api.eu-west-1.amazonaws.com/dev/graphql`,
+  headers: {
     "Content-Type": "application/json",
-    // @ts-ignore
-    "Access-Control-Allow-Origin": "*",
-		// @ts-ignore
-		"Access-Control-Allow-Credentials": false,
-	},
+  }
 });
 
 const authLink = setContext(() => {

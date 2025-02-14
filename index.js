@@ -17,8 +17,6 @@ const pubsub = new PubSub();
 const port = process.env.PORT || 3000;
 
 const app = express();
-
-app.use(cors({origin: '*'}));
 // @ts-ignore
 app.use(express.json({ limit: '20mb' }));
 // @ts-ignore
