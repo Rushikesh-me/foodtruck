@@ -144,7 +144,7 @@ module.exports = {
           <h1>Email Confirmation</h1>
           <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
         };
-        console.log("sending mail")
+        console.log("sending mail : ", mailOptions, process.env.NODEMAILER_USER, process.env.NODEMAILER_PASS);
 
 		    const transport = nodemailer.createTransport({
 		    	service: "gmail",
@@ -153,7 +153,7 @@ module.exports = {
 		    		pass: process.env.NODEMAILER_PASS,
 		    	},
 		    });
-        transport.sendMail(mailOptions, function (err, info) {
+        const mailInfo = await transport.sendMail(mailOptions, function (err, info) {
           if (err) {
             console.log("mail sending error : ",err);
             throw new Error("Error in sending confirmation email")
@@ -161,7 +161,7 @@ module.exports = {
           console.log("mail sending info : ", info);
          
         });
-
+        console.log("mail sent info : ", mailInfo);
         const response = {
           ...res._doc,
           id: res._id,
