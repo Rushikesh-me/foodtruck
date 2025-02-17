@@ -161,12 +161,14 @@ module.exports = {
           console.log("mail sending info : ", info);
          
         });
-        console.log("returning user")
-        return {
+
+        const response = {
           ...res._doc,
           id: res._id,
           token
-        };
+        }
+                console.log("returning user", user);
+        return response;
       } catch (err) {
         console.log(err, '\n', "stringified error : ", JSON.stringify(err))
         throw new Error(err)
