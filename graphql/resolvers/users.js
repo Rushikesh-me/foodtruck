@@ -94,75 +94,80 @@ module.exports = {
         registerInput: { username, email, password, confirmPassword }
       }
     ) {
-      // Validate user data
-      const { valid, errors } = validateRegisterInput(
-        username,
-        email,
-        password,
-        confirmPassword
-      );
-      if (!valid) {
-        throw new UserInputError('Errors', { errors });
-      }
-      const user = await User.findOne({ username });
-      if (user) {
-        throw new UserInputError('Username is taken', {
-          errors: {
-            username: 'This username is taken'
-          }
+      try {
+
+        // Validate user data
+        const { valid, errors } = validateRegisterInput(
+          username,
+          email,
+          password,
+          confirmPassword
+        );
+        if (!valid) {
+          throw new UserInputError('Errors', { errors });
+        }
+        const user = await User.findOne({ username });
+        if (user) {
+          throw new UserInputError('Username is taken', {
+            errors: {
+              username: 'This username is taken'
+            }
+          });
+        }
+        const userEmail = await User.findOne({ email });
+        if (userEmail) {
+          throw new UserInputError('Email is already registered with us', {
+            errors: {
+              email: 'This email is already registered with us'
+            }
+          });
+        }
+  
+        password = await bcrypt.hash(password, 12);
+  
+        
+  
+        const newUser = new User({
+          email,
+          username,
+          password,
+          status:false,
+          createdAt: new Date().toISOString()
         });
-      }
-      const userEmail = await User.findOne({ email });
-      if (userEmail) {
-        throw new UserInputError('Email is already registered with us', {
-          errors: {
-            email: 'This email is already registered with us'
-          }
-        });
-      }
-
-      password = await bcrypt.hash(password, 12);
-
-      
-
-      const newUser = new User({
-        email,
-        username,
-        password,
-        status:false,
-        createdAt: new Date().toISOString()
-      });
-      const newProfile= new Profile({
-        username,
-        title: "My Food Truck",
-        description: "Tell the world how awesome your food is!!"
-
-      })
-      await newProfile.save();
-      const res = await newUser.save();
-
-      const token = generateToken(res);
-      const authorization = generateAuthorization(res)
-      const mailOptions = {
-			from: process.env.EMAIL_USER, // sender address
-			to: email, // list of receivers
-			subject: "Please confirm your Find Food Truck account", // Subject line
-			html: `<div>
-        <h1>Email Confirmation</h1>
-        <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
-		};
-
-
-      transport.sendMail(mailOptions, function (err, info) {
-        if (err){
-          throw new Error("Error in sending confirmation email")}
-       
-       });
-      return {
-        ...res._doc,
-        id: res._id,
-        token
+        const newProfile= new Profile({
+          username,
+          title: "My Food Truck",
+          description: "Tell the world how awesome your food is!!"
+  
+        })
+        await newProfile.save();
+        const res = await newUser.save();
+  
+        const token = generateToken(res);
+        const authorization = generateAuthorization(res)
+        const mailOptions = {
+        from: process.env.EMAIL_USER, // sender address
+        to: email, // list of receivers
+        subject: "Please confirm your Find Food Truck account", // Subject line
+        html: `<div>
+          <h1>Email Confirmation</h1>
+          <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
       };
+  
+  
+        transport.sendMail(mailOptions, function (err, info) {
+          if (err){
+            throw new Error("Error in sending confirmation email")}
+         
+         });
+        return {
+          ...res._doc,
+          id: res._id,
+          token
+        };
+      } catch (err) {
+        console.log(err, '\n',"stringified error : ", JSON.stringify(err))
+        throw new Error(err)
     },
 
 

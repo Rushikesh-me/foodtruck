@@ -28,7 +28,6 @@ function Register(props) {
       props.history.push('/redirect/register');
     },
     onError(err) {
-      console.log("error : ", err, '\n', "stringified error : ", JSON.stringify(err));
       setErrors(err.graphQLErrors[0]?.extensions?.exception?.errors || {
         general: "An error occurred while trying to register. Please try again."
       });
