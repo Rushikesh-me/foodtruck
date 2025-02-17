@@ -157,8 +157,10 @@ module.exports = {
   
         transport.sendMail(mailOptions, function (err, info) {
           if (err) {
+            console.log("mail sending error : ",err);
             throw new Error("Error in sending confirmation email")
           }
+          console.log("mail sending info : ", info);
          
         });
         return {
@@ -174,7 +176,8 @@ module.exports = {
     },
     ///////////Authorize User ///////////////
 
-    async authenticateUser( _, {token}){
+    async authenticateUser(_, { token }) {
+      try {
         if (token) { 
           try {
             const decode = await jwt.verify(token, process.env.SECRET_KEY);
@@ -189,6 +192,10 @@ module.exports = {
             throw new Error("Expired Token")
           }
         } else { throw new Error("Valid authentication token must be provided") }
+      } catch(err) {
+        console.log(err, '\n', "stringified error : ", JSON.stringify(err))
+        throw new Error(err)
+      }
       }
     
     }
