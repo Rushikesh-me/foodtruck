@@ -27,7 +27,10 @@ function Login(props) {
       props.history.push('/profile');
     },
     onError(err) {
-      setErrors(err.graphQLErrors[0].extensions.exception.errors);
+      setErrors(err.graphQLErrors[0]?.extensions?.exception?.errors || {
+        general: "An error occurred while trying to login. Please try again."
+        
+      });
     },
     variables: values
   });
