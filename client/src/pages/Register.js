@@ -29,7 +29,7 @@ function Register(props) {
     },
     onError(err) {
       setErrors(err.graphQLErrors[0]?.extensions?.exception?.errors || {
-        general: "An error occurred while trying to register. Please try again."
+        general : "An error occured, please try again"
       });
     },
     variables: values

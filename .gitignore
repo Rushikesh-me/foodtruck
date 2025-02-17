@@ -1,3 +1,5 @@
 .env
 node_modules
+public
+src
 package-lock.json

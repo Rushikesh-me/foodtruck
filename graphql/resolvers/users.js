@@ -131,10 +131,10 @@ module.exports = {
           email,
           username,
           password,
-          status:false,
+          status: false,
           createdAt: new Date().toISOString()
         });
-        const newProfile= new Profile({
+        const newProfile = new Profile({
           username,
           title: "My Food Truck",
           description: "Tell the world how awesome your food is!!"
@@ -146,31 +146,32 @@ module.exports = {
         const token = generateToken(res);
         const authorization = generateAuthorization(res)
         const mailOptions = {
-        from: process.env.EMAIL_USER, // sender address
-        to: email, // list of receivers
-        subject: "Please confirm your Find Food Truck account", // Subject line
-        html: `<div>
+          from: process.env.EMAIL_USER, // sender address
+          to: email, // list of receivers
+          subject: "Please confirm your Find Food Truck account", // Subject line
+          html: `<div>
           <h1>Email Confirmation</h1>
           <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
-      };
+        };
   
   
         transport.sendMail(mailOptions, function (err, info) {
-          if (err){
-            throw new Error("Error in sending confirmation email")}
+          if (err) {
+            throw new Error("Error in sending confirmation email")
+          }
          
-         });
+        });
         return {
           ...res._doc,
           id: res._id,
           token
         };
       } catch (err) {
-        console.log(err, '\n',"stringified error : ", JSON.stringify(err))
+        console.log(err, '\n', "stringified error : ", JSON.stringify(err))
         throw new Error(err)
-    },
+      }
 
-
+    }
     ///////////Authorize User ///////////////
 
     async authenticateUser( _, {token}){
