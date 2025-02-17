@@ -24,27 +24,6 @@ const User = require('../models/User');
 const Profile = require('../models/Profile');
 
 
-function generateToken(user) {
-  return jwt.sign(
-    {
-      id: user.id,
-      email: user.email,
-      username: user.username
-    },
-    process.env.SECRET_KEY || "",
-    {expiresIn: "12h"}
-  );
-}
-function generateAuthorization(user){
-  return jwt.sign(
-    {
-      id: user.id,
-      username: user.username
-    },
-    process.env.SECRET_KEY || "",
-    {expiresIn: "1h"}
-  );
-}
 
 module.exports = {
 
@@ -53,6 +32,17 @@ module.exports = {
     ///////////login////////////////
 
     async login(_, { username, password }) {
+      function generateToken(user) {
+			return jwt.sign(
+				{
+					id: user.id,
+					email: user.email,
+					username: user.username,
+				},
+				process.env.SECRET_KEY || "",
+				{ expiresIn: "12h" }
+			);
+		}
       const { errors, valid } = validateLoginInput(username, password);
 
       if (!valid) {
@@ -95,6 +85,17 @@ module.exports = {
       }
     ) {
       try {
+        // generate authorisation
+        function generateAuthorization(user) {
+			return jwt.sign(
+				{
+					id: user.id,
+					username: user.username,
+				},
+				process.env.SECRET_KEY || "",
+				{ expiresIn: "1h" }
+			);
+		}
 
         // Validate user data
         const { valid, errors } = validateRegisterInput(
@@ -142,6 +143,17 @@ module.exports = {
         })
         await newProfile.save();
         const res = await newUser.save();
+        function generateToken(user) {
+			return jwt.sign(
+				{
+					id: user.id,
+					email: user.email,
+					username: user.username,
+				},
+				process.env.SECRET_KEY || "",
+				{ expiresIn: "12h" }
+			);
+		}
   
         const token = generateToken(res);
         const authorization = generateAuthorization(res)
