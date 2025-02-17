@@ -4,18 +4,6 @@ const { UserInputError } = require('apollo-server-express');
 const nodemailer = require("nodemailer");
 require('dotenv').config()
 
-
-const user = process.env.NODEMAILER_USER;
-const pass = process.env.NODEMAILER_PASS;
-
-const transport = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
-
 const {
   validateRegisterInput,
   validateLoginInput
@@ -24,6 +12,27 @@ const User = require('../models/User');
 const Profile = require('../models/Profile');
 
 
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      username: user.username
+    },
+    process.env.SECRET_KEY || "",
+    {expiresIn: "12h"}
+  );
+}
+function generateAuthorization(user){
+  return jwt.sign(
+    {
+      id: user.id,
+      username: user.username
+    },
+    process.env.SECRET_KEY || "",
+    {expiresIn: "1h"}
+  );
+}
 
 module.exports = {
 
@@ -32,17 +41,6 @@ module.exports = {
     ///////////login////////////////
 
     async login(_, { username, password }) {
-      function generateToken(user) {
-			return jwt.sign(
-				{
-					id: user.id,
-					email: user.email,
-					username: user.username,
-				},
-				process.env.SECRET_KEY || "",
-				{ expiresIn: "12h" }
-			);
-		}
       const { errors, valid } = validateLoginInput(username, password);
 
       if (!valid) {
@@ -85,18 +83,7 @@ module.exports = {
       }
     ) {
       try {
-        // generate authorisation
-        function generateAuthorization(user) {
-			return jwt.sign(
-				{
-					id: user.id,
-					username: user.username,
-				},
-				process.env.SECRET_KEY || "",
-				{ expiresIn: "1h" }
-			);
-		}
-
+        console.log("registering user \n")
         // Validate user data
         const { valid, errors } = validateRegisterInput(
           username,
@@ -105,10 +92,12 @@ module.exports = {
           confirmPassword
         );
         if (!valid) {
-          throw new UserInputError('Errors', { errors });
+          console.log("errors : ", errors)
+          throw new UserInputError('Errors', errors );
         }
         const user = await User.findOne({ username });
         if (user) {
+          console.log("username is taken")
           throw new UserInputError('Username is taken', {
             errors: {
               username: 'This username is taken'
@@ -117,6 +106,7 @@ module.exports = {
         }
         const userEmail = await User.findOne({ email });
         if (userEmail) {
+          console.log("email is already registered with us")
           throw new UserInputError('Email is already registered with us', {
             errors: {
               email: 'This email is already registered with us'
@@ -125,8 +115,6 @@ module.exports = {
         }
   
         password = await bcrypt.hash(password, 12);
-  
-        
   
         const newUser = new User({
           email,
@@ -141,21 +129,12 @@ module.exports = {
           description: "Tell the world how awesome your food is!!"
   
         })
+        console.log("saving user and profile")
         await newProfile.save();
         const res = await newUser.save();
-        function generateToken(user) {
-			return jwt.sign(
-				{
-					id: user.id,
-					email: user.email,
-					username: user.username,
-				},
-				process.env.SECRET_KEY || "",
-				{ expiresIn: "12h" }
-			);
-		}
-  
+        console.log("generating token")
         const token = generateToken(res);
+        console.log("generating authorization")
         const authorization = generateAuthorization(res)
         const mailOptions = {
           from: process.env.EMAIL_USER, // sender address
@@ -165,8 +144,15 @@ module.exports = {
           <h1>Email Confirmation</h1>
           <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
         };
-  
-  
+        console.log("sending mail")
+
+		    const transport = nodemailer.createTransport({
+		    	service: "gmail",
+		    	auth: {
+		    		user: process.env.NODEMAILER_USER,
+		    		pass: process.env.NODEMAILER_PASS,
+		    	},
+		    });
         transport.sendMail(mailOptions, function (err, info) {
           if (err) {
             console.log("mail sending error : ",err);
@@ -175,6 +161,7 @@ module.exports = {
           console.log("mail sending info : ", info);
          
         });
+        console.log("returning user")
         return {
           ...res._doc,
           id: res._id,
@@ -188,8 +175,7 @@ module.exports = {
     },
     ///////////Authorize User ///////////////
 
-    async authenticateUser(_, { token }) {
-      try {
+    async authenticateUser( _, {token}){
         if (token) { 
           try {
             const decode = await jwt.verify(token, process.env.SECRET_KEY);
@@ -204,10 +190,6 @@ module.exports = {
             throw new Error("Expired Token")
           }
         } else { throw new Error("Valid authentication token must be provided") }
-      } catch(err) {
-        console.log(err, '\n', "stringified error : ", JSON.stringify(err))
-        throw new Error(err)
-      }
       }
     
     }
