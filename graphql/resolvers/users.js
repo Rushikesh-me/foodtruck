@@ -171,7 +171,7 @@ module.exports = {
         throw new Error(err)
       }
 
-    }
+    },
     ///////////Authorize User ///////////////
 
     async authenticateUser( _, {token}){
