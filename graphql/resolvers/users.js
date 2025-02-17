@@ -167,7 +167,7 @@ module.exports = {
           id: res._id,
           token
         }
-                console.log("returning user", user);
+                console.log("returning user", response);
         return response;
       } catch (err) {
         console.log(err, '\n', "stringified error : ", JSON.stringify(err))
