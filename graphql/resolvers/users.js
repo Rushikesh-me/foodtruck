@@ -83,7 +83,7 @@ module.exports = {
       }
     ) {
       try {
-        console.log("registering user \n")
+        
         // Validate user data
         const { valid, errors } = validateRegisterInput(
           username,
@@ -92,12 +92,12 @@ module.exports = {
           confirmPassword
         );
         if (!valid) {
-          console.log("errors : ", errors)
+          
           throw new UserInputError('Errors', errors );
         }
         const user = await User.findOne({ username });
         if (user) {
-          console.log("username is taken")
+          
           throw new UserInputError('Username is taken', {
             errors: {
               username: 'This username is taken'
@@ -106,7 +106,7 @@ module.exports = {
         }
         const userEmail = await User.findOne({ email });
         if (userEmail) {
-          console.log("email is already registered with us")
+          
           throw new UserInputError('Email is already registered with us', {
             errors: {
               email: 'This email is already registered with us'
@@ -129,12 +129,12 @@ module.exports = {
           description: "Tell the world how awesome your food is!!"
   
         })
-        console.log("saving user and profile")
+        
         await newProfile.save();
         const res = await newUser.save();
-        console.log("generating token")
-        const token = generateToken(res);
-        console.log("generating authorization")
+        
+        const token = await generateToken(res);
+        
         const authorization = generateAuthorization(res)
         const mailOptions = {
           from: "findf00ddtruck@gmail.com", // sender address
@@ -144,8 +144,6 @@ module.exports = {
           <h1>Email Confirmation</h1>
           <h2>To activate your account, <a href="${process.env.APP_URL}/authenticate/${authorization}">click here</a><h3>`, // plain text body
         };
-        console.log("sending mail : ", mailOptions, process.env.NODEMAILER_USER, process.env.NODEMAILER_PASS);
-
 		    const transport = nodemailer.createTransport({
 		    	service: "gmail",
 		    	auth: {
@@ -157,26 +155,24 @@ module.exports = {
 		    	return new Promise((resolve, reject) => {
 		    		transport.sendMail(mailOptions, (err, info) => {
 		    			if (err) {
-		    				console.log("mail sending error: ", err);
 		    				return reject(new Error("Error in sending confirmation email"));
 		    			}
-		    			console.log("mail sending info: ", info);
 		    			resolve(info);
 		    		});
 		    	});
 		    };
 
-	      const mailInfo = await sendMailAsync(mailOptions);
-		    console.log("mail sent info: ", mailInfo);
+	      await sendMailAsync(mailOptions);
+		    
         const response = {
           ...res._doc,
           id: res._id,
           token
         }
-        console.log("returning user", response);
+        
         return response;
       } catch (err) {
-        console.log(err, '\n', "stringified error : ", JSON.stringify(err))
+        
         throw new Error(err)
       }
 
