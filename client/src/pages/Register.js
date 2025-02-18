@@ -17,11 +17,12 @@ function Register(props) {
 		confirmPassword: "",
 	});
 
-	const [addUser, { loading }] = useMutation(REGISTER_USER, {
+	const [addUser, { loading, error }] = useMutation(REGISTER_USER, {
 		update(_, { data: { register: userData } }) {
 			props.history.push("/redirect/register");
 		},
 		onError(err) {
+			console.log(err);
 			setErrors(
 				err.graphQLErrors[0]?.extensions?.exception?.errors || {
 					general: "An error occured, please try again",

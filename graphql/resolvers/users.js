@@ -137,7 +137,7 @@ module.exports = {
         console.log("generating authorization")
         const authorization = generateAuthorization(res)
         const mailOptions = {
-          from: process.env.EMAIL_USER, // sender address
+          from: "findf00ddtruck@gmail.com", // sender address
           to: email, // list of receivers
           subject: "Please confirm your Find Food Truck account", // Subject line
           html: `<div>
@@ -168,7 +168,7 @@ module.exports = {
           token
         }
                 console.log("returning user", response);
-        return response;
+        return JSON.parse(JSON.stringify(response));
       } catch (err) {
         console.log(err, '\n', "stringified error : ", JSON.stringify(err))
         throw new Error(err)
