@@ -153,22 +153,28 @@ module.exports = {
 		    		pass: process.env.NODEMAILER_PASS,
 		    	},
 		    });
-        const mailInfo = await transport.sendMail(mailOptions, function (err, info) {
-          if (err) {
-            console.log("mail sending error : ",err);
-            throw new Error("Error in sending confirmation email")
-          }
-          console.log("mail sending info : ", info);
-         
-        });
-        console.log("mail sent info : ", mailInfo);
+        const sendMailAsync = (mailOptions) => {
+		    	return new Promise((resolve, reject) => {
+		    		transport.sendMail(mailOptions, (err, info) => {
+		    			if (err) {
+		    				console.log("mail sending error: ", err);
+		    				return reject(new Error("Error in sending confirmation email"));
+		    			}
+		    			console.log("mail sending info: ", info);
+		    			resolve(info);
+		    		});
+		    	});
+		    };
+
+	      const mailInfo = await sendMailAsync(mailOptions);
+		    console.log("mail sent info: ", mailInfo);
         const response = {
           ...res._doc,
           id: res._id,
           token
         }
-                console.log("returning user", response);
-        return JSON.parse(JSON.stringify(response));
+        console.log("returning user", response);
+        return response;
       } catch (err) {
         console.log(err, '\n', "stringified error : ", JSON.stringify(err))
         throw new Error(err)
