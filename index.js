@@ -41,7 +41,6 @@ const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => ({ 
 // app.listen(port, () => { console.log(`Server running at http://localhost:${port}${server.graphqlPath}`) });
 
 module.exports.handler = serverless(app, {
-	binary: ["*/*"],
 	request: function (request, context) {
 		request.context = context;
 		return request;
